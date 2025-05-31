@@ -1,0 +1,67 @@
+Cloud-Native Monitoring Application
+A lightweight, Python-based cloud-native monitoring application that collects system metrics (CPU, memory, disk usage) and exposes them in Prometheus format for scalable observability. Designed with cloud-native principles, this app is containerized with Docker for easy deployment on any cloud platform or local environment.
+---
+Features
+- Real-time collection of system metrics using `psutil`.
+- Metrics exposed in Prometheus-compatible format via `/metrics` endpoint.
+- Health and readiness endpoints (`/health` and `/readiness`) for monitoring app status.
+- Simple REST API using Flask.
+- Containerized with Docker for portability and easy deployment.
+---
+Tech Stack
+- Python 3.10+
+- Flask (REST API framework)
+- Prometheus Python client (metrics exposition)
+- psutil (system resource monitoring)
+- Docker (containerization)
+---
+Getting Started
+Prerequisites
+- Python 3.10 or higher installed
+- Docker installed (for containerization)
+- `pip` package manager
+Installation
+1. Clone the repository:
+```
+git clone https://github.com/your-username/cloud-native-monitoring-app.git
+cd cloud-native-monitoring-app
+```
+2. Install required Python packages:
+```
+pip install -r requirements.txt
+```
+Running Locally
+You can run the application locally without Docker for quick testing:
+```
+python monitoring_app.py
+```
+- The Flask app will be available on `http://localhost:5000`.
+- Prometheus metrics will be exposed on `http://localhost:8000/metrics`.
+- Health check: `http://localhost:5000/health`
+- Readiness check: `http://localhost:5000/readiness`
+---
+Docker Containerization
+To package the app for cloud deployment, build and run the Docker container:
+1. Build the Docker image:
+```
+docker build -t cloud-monitor-app .
+```
+2. Run the Docker container:
+```
+docker run -p 5000:5000 -p 8000:8000 cloud-monitor-app
+```
+3. Verify endpoints:
+- `http://localhost:5000/health`
+- `http://localhost:5000/readiness`
+- `http://localhost:8000/metrics`
+---
+Next Steps
+- Kubernetes manifests and deployment to AWS EKS will be added soon.
+- Integration with Prometheus and Grafana for advanced monitoring and visualization.
+- CI/CD pipeline to automate deployment.
+---
+Contribution
+Contributions are welcome! Feel free to open issues or submit pull requests.
+---
+License
+MIT License © 2025 Your Name

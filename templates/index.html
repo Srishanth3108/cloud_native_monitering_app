@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>System Monitoring Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f6f8;
+            margin: 20px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .gauge-container {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+        .gauge {
+            width: 30%;
+        }
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: auto;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>🖥️ System Monitoring Dashboard</h1>
+    <h3>Hostname: {{ hostname }}</h3>
+    <h3>Uptime: {{ uptime }}</h3>
+
+    <div class="gauge-container">
+        <div class="gauge" id="cpu-gauge"></div>
+        <div class="gauge" id="memory-gauge"></div>
+        <div class="gauge" id="disk-gauge"></div>
+    </div>
+
+    <h3>📶 Network Stats</h3>
+    <p>Bytes Sent: <strong>{{ bytes_sent }} MB</strong></p>
+    <p>Bytes Received: <strong>{{ bytes_recv }} MB</strong></p>
+
+    <h3>🔥 Top CPU Consuming Processes</h3>
+    <table>
+        <tr><th>PID</th><th>Name</th><th>CPU %</th></tr>
+        {% for p in processes %}
+        <tr>
+            <td>{{ p.pid }}</td>
+            <td>{{ p.name }}</td>
+            <td>{{ p.cpu_percent }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <script>
+        function drawGauge(id, label, value, color) {
+            var data = [{
+                type: "indicator",
+                mode: "gauge+number",
+                value: value,
+                title: { text: label },
+                gauge: {
+                    axis: { range: [0, 100] },
+                    bar: { color: color }
+                }
+            }];
+            Plotly.newPlot(id, data);
+        }
+
+        drawGauge("cpu-gauge", "CPU Usage", {{ cpu_percent }}, "crimson");
+        drawGauge("memory-gauge", "Memory Usage", {{ memory_percent }}, "steelblue");
+        drawGauge("disk-gauge", "Disk Usage", {{ disk_percent }}, "darkgreen");
+    </script>
+</body>
+</html>
